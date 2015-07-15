@@ -70,20 +70,23 @@ angular.module('starter.controllers', [])
       $ionicLoading.hide();
     });
 
-  }, 2000);
+  }, 1000);
 })
 
 .controller('WeatherCtrl', function($scope, $stateParams, weather, $ionicLoading) {
 
   $scope.city = $stateParams.city;
   $scope.icon_obj = weather.icon_obj;
+  //$scope.precision = settings.precision;
 
   $ionicLoading.show({
     template: "<div class='loading'><img src='http://i.imgur.com/bvaKfDm.gif'/><p>Loading!</p></div>"
   });
 
   weather.getWeather($stateParams.lat, $stateParams.long, function(data){
-    $scope.temperature = data.currently.temperature;
+    var temperature = data.currently.temperature;
+    $scope.temperature = weather.convertedTemp(temperature);
+    //$scope.tempSymbol = settings.scale;
     $scope.icon = data.currently.icon;
     $scope.summary = data.currently.summary;
     $ionicLoading.hide();
