@@ -55,4 +55,43 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('SearchCtrl', function () {});
+.controller('SearchCtrl', function ($scope, $http, $ionicLoading, Search) {
+
+  $scope.queryChanged = _.debounce(function(){
+
+    $ionicLoading.show({
+      template: "<div class='loading'><img src='http://i.imgur.com/bvaKfDm.gif'/><p>Loading!</p></div>"
+    });
+
+    Search.getCities($scope.query, function(data){
+      console.log(data);
+      $scope.geocode_data = data;
+      $ionicLoading.hide();
+    });
+
+  }, 2000);
+})
+
+.controller('WeatherCtrl', function($scope, $stateParams, Weather, $ionicLoading) {
+
+  $scope.city = $stateParams.city;
+  $scope.icon_obj = Weather.icon_obj;
+
+  $ionicLoading.show({
+    template: "<div class='loading'><img src='http://i.imgur.com/bvaKfDm.gif'/><p>Loading!</p></div>"
+  });
+
+  Weather.getWeather($stateParams.lat, $stateParams.long, function(data){
+    $scope.temperature = data.currently.temperature;
+    $scope.icon = data.currently.icon;
+    $scope.summary = data.currently.summary;
+    $ionicLoading.hide();
+    console.log(data);
+  })
+})
+
+.controller('SettingsCtrl', function($scope) {
+  $scope.precision = 2;
+  $scope.scale = "F";
+
+});

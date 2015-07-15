@@ -1,5 +1,33 @@
-<ion-view view-title="Search">
+<ion-view view-title="Location Search">
   <ion-content>
-    <h1>Search</h1>
+    <ion-list>
+      <ion-item class="item-input-inset">
+        <label class="item-input-wrapper">
+          <i class="icon ion-search placeholder-icon"></i>
+          <!-- ng-model here will write that property to the ion-item scope within the ion-content scope, hence we need to use $parent.$parent to get it back into the controller's scope.
+          for ng-change, though, it's looking in ion-content's scope for some reason? (aren't both of these nested within ion-item in terms of the html?)
+          NO, was a mistake earlier when it was $parent; would technically be $parent.$parent,
+          BUT functions in a scope are available to all children scopes of that scope,
+          so we don't need to write any $parents. Even though this is being called from a child scope. This rule doesn't apply to the data (ng-model) hence the $parent.$parent.-->
+          <input
+            type="search"
+            placeholder="Search location..."
+            ng-model="$parent.$parent.query"
+
+            ng-change="queryChanged()"
+          />
+        </label>
+      </ion-item>
+      <ion-item
+        ng-repeat="result in geocode_data.results"
+        ui-sref="app.weather({
+          city: result.formatted_address,
+          lat: result.geometry.location.lat,
+          long: result.geometry.location.lng
+        })"
+      >
+        {{result.formatted_address}}
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

@@ -20,4 +20,36 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+.weather-wrapper {
+  text-align: center;
 
+  .weather-info {
+    display: inline-block;
+    background: rgba($positive, 0.8);
+    border-radius: 30px;
+    padding: 20px;
+
+      h1, h2 {
+        color: white;
+      }
+
+  }
+
+}
+
+.city_results {
+  display: block;
+  position: relative;
+  left: 40px;
+  list-style-image: url('http://randomhoohaas.flyingomelette.com/bomb/gba-st/img/item-raindrop.gif');
+}
+
+.city_result {
+  font-size: 22px;
+  margin: 15px;
+}
+
+.weather-info {
+  text-align: center;
+  margin: 30px 0;
+}
