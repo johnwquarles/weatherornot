@@ -41,6 +41,7 @@ angular.module('starter.controllers', [])
   };
 })
 
+// $http doesn't belong in controllers!
 .controller('PlaylistsCtrl', function($scope) {
   $scope.playlists = [
     { title: 'Reggae', id: 1 },
@@ -55,7 +56,7 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('SearchCtrl', function ($scope, $http, $ionicLoading, Search) {
+.controller('SearchCtrl', function ($scope, $ionicLoading, search) {
 
   $scope.queryChanged = _.debounce(function(){
 
@@ -63,7 +64,7 @@ angular.module('starter.controllers', [])
       template: "<div class='loading'><img src='http://i.imgur.com/bvaKfDm.gif'/><p>Loading!</p></div>"
     });
 
-    Search.getCities($scope.query, function(data){
+    search.getCities($scope.query, function(data){
       console.log(data);
       $scope.geocode_data = data;
       $ionicLoading.hide();
@@ -72,16 +73,16 @@ angular.module('starter.controllers', [])
   }, 2000);
 })
 
-.controller('WeatherCtrl', function($scope, $stateParams, Weather, $ionicLoading) {
+.controller('WeatherCtrl', function($scope, $stateParams, weather, $ionicLoading) {
 
   $scope.city = $stateParams.city;
-  $scope.icon_obj = Weather.icon_obj;
+  $scope.icon_obj = weather.icon_obj;
 
   $ionicLoading.show({
     template: "<div class='loading'><img src='http://i.imgur.com/bvaKfDm.gif'/><p>Loading!</p></div>"
   });
 
-  Weather.getWeather($stateParams.lat, $stateParams.long, function(data){
+  weather.getWeather($stateParams.lat, $stateParams.long, function(data){
     $scope.temperature = data.currently.temperature;
     $scope.icon = data.currently.icon;
     $scope.summary = data.currently.summary;
@@ -90,8 +91,14 @@ angular.module('starter.controllers', [])
   })
 })
 
-.controller('SettingsCtrl', function($scope) {
-  $scope.precision = 2;
-  $scope.scale = "F";
+.controller('SettingsCtrl', function($scope, settings) {
+  $scope.precision = settings.localStorage("precision") || 2;
+  $scope.scale = settings.localStorage("scale") || "F";
+
+  // looking on the scope for changes to scale
+  $scope.$watchGroup(['scale', 'precision'], function(change) {
+    settings.localStorage("scale", change[0]);
+    settings.localStorage("precision", change[1]);
+  })
 
 });
