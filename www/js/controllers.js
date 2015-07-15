@@ -92,13 +92,13 @@ angular.module('starter.controllers', [])
 })
 
 .controller('SettingsCtrl', function($scope, settings) {
-  $scope.precision = settings.localStorage("precision") || 2;
-  $scope.scale = settings.localStorage("scale") || "F";
+  $scope.precision = settings.precision;
+  $scope.scale = settings.scale;
 
   // looking on the scope for changes to scale
   $scope.$watchGroup(['scale', 'precision'], function(change) {
-    settings.localStorage("scale", change[0]);
-    settings.localStorage("precision", change[1]);
+    settings.scale = change[0];
+    settings.precision = change[1];
   })
 
 });
