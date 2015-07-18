@@ -1,0 +1,25 @@
+<ion-view view-title="Settings">
+  <ion-content>
+
+    <div class="item item-divider">
+      Decimal Precision
+    </div>
+
+    <div class="item range">
+      <span>70&deg;</span>
+      <input type="range" name="precision" min="0" max="2" value="0" ng-model="$parent.precision">
+      <span>70.00&deg;</span>
+    </div>
+
+    <div class="item item-divider">
+      Degree Units
+    </div>
+
+    <ion-radio ng-model="$parent.scale" ng-value="'F'">Farenheit</ion-radio>
+    <ion-radio ng-model="$parent.scale" ng-value="'C'">Celsius</ion-radio>
+    <ion-radio ng-model="$parent.scale" ng-value="'K'">Kelvin (for scientists!!!)</ion-radio>
+    <ion-radio ng-model="$parent.scale" ng-value="'P'">Planck Units (OMGWTFBBQSAUCE!!!!!!)</ion-radio>
+    <ion-radio ng-model="$parent.scale" ng-value="'V'">Use The People Words</ion-radio>
+
+  </ion-content>
+</ion-view>

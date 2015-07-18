@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, locations) {
   
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
@@ -56,7 +56,11 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('SearchCtrl', function ($scope, $ionicLoading, search) {
+.controller('SearchCtrl', function ($scope, $ionicLoading, search, locations) {
+
+  // function saveToLocations(data){
+  //   locations.addOne(data.results[0].formatted_address, data.results[0].geometry.location.lat, data.results[0].geometry.location.lng);
+  // }
 
   $scope.queryChanged = _.debounce(function(){
 
@@ -68,12 +72,14 @@ angular.module('starter.controllers', [])
       console.log(data);
       $scope.geocode_data = data;
       $ionicLoading.hide();
+      // saveToLocations(data);
     });
 
   }, 1000);
 })
 
-.controller('WeatherCtrl', function($scope, $stateParams, weather, $ionicLoading) {
+.controller('WeatherCtrl', function($scope, $stateParams, weather, $ionicLoading, locations) {
+  //$scope.params = $stateParams;
 
   $scope.city = $stateParams.city;
   $scope.icon_obj = weather.icon_obj;
@@ -92,6 +98,14 @@ angular.module('starter.controllers', [])
     $ionicLoading.hide();
     console.log(data);
   })
+
+
+  // should be able to move this back into menu; will still work since weather is a child of menu.
+  // $scope.addToLocations = function(name, lat, long) {
+  //   console.log("add to locations: " + name + " " + lat + " " + long);
+  //   locations.addOne(name, lat, long);
+  // }
+
 })
 
 .controller('SettingsCtrl', function($scope, settings) {
@@ -103,5 +117,26 @@ angular.module('starter.controllers', [])
     settings.scale = change[0];
     settings.precision = change[1];
   })
+
+})
+
+.controller('MenuCtrl', function($scope, locations, $stateParams, $rootScope) {
+  $scope.params = $stateParams;
+  $scope.fav_cities = locations.getAll();
+
+  $rootScope.$on('menuItemChanged', function (event, message){
+    $scope.fav_cities = locations.getAll();
+  })
+
+  $scope.delete = function(city_name){
+    locations.removeOne(city_name);
+    $rootScope.$emit('menuItemChanged');
+  }
+
+  $scope.addToLocations = function(name, lat, long) {
+    console.log("add to locations: " + name + " " + lat + " " + long);
+    locations.addOne(name, lat, long);
+    $rootScope.$emit('menuItemChanged');
+  }
 
 });

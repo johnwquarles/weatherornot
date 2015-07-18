@@ -1,0 +1,14 @@
+<ion-view view-title="{{city}}">
+
+  <ion-nav-buttons side="right">
+    <button class="button button-icon button-clear ion-android-star-outline" ng-click="addToLocations(params.city, params.lat, params.long)"></button>
+  </ion-nav-buttons>
+
+  <ion-content class="weather-wrapper">
+    <div class="weather-info">
+      <img ng-show="icon" ng-src="http://www.tenki-yoho.com/icon/sketch/{{icon_obj[icon]}}" alt="{{icon}}"/>
+      <h1 ng-show="temperature">{{temperature|tempdisplay}}</h1>
+      <h2 ng-show="summary">{{summary}}</h2>
+    </div>
+  </ion-content>
+</ion-view>
